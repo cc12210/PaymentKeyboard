@@ -1,7 +1,7 @@
-import PaymentKeyboard from "./components/PaymentKeyboard";
+import TransferAccount from "./pages/TransferAccount";
 
 function App() {
-  return <PaymentKeyboard />;
+  return <TransferAccount />;
 }
 
 export default App;
