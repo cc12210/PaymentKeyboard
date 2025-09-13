@@ -26,7 +26,7 @@ export const KEYBOARD_LAYOUT: KeyboardItem[] = [
   },
   {
     label: "x",
-    value: "x",
+    value: "delete",
     colSpan: 1,
     rowSpan: 1,
   },
@@ -49,7 +49,7 @@ export const KEYBOARD_LAYOUT: KeyboardItem[] = [
     rowSpan: 1,
   },
   {
-    label: "转账",
+    label: "提现",
     value: "transfer",
     colSpan: 1,
     rowSpan: 3,

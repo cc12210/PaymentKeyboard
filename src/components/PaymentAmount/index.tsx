@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 
 const PaymentAmount = ({
   setIsShow,
+  amount,
+  setAmount
 }: {
   setIsShow: (isShow: boolean) => void;
+  amount: string;
+  setAmount: (amount: string) => void;
 }) => {
-  const [amount, setAmount] = useState("");
   const [unit, setUnit] = useState("千");
 
   const handleDocumentClick = (e: MouseEvent) => {
@@ -25,8 +28,7 @@ const PaymentAmount = ({
     // 卡片区域和键盘区域继续保持显示
     if (isClickKeyboard || isClickPaymentAmountContainer) {
       e.stopPropagation();
-      console.log(amountInput);
-      amountInput?.focus();
+      // amountInput?.focus();
       return;
     }
     setIsShow(false);
@@ -51,6 +53,7 @@ const PaymentAmount = ({
           <div className="flex-1">
             <input
               id="amount-Input-payment"
+              maxLength={8}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               onFocus={() => setIsShow(true)}
