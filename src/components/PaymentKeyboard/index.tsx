@@ -12,6 +12,7 @@ const PaymentKeyboard = ({ isShow, setIsShow }: IPaymentKeyboardProps) => {
   };
   return (
     <div
+      id="payment-keyboard-container"
       className={`fixed bottom-0 w-full transform transition-transform duration-300 ease-in-out ${
         isShow ? "translate-y-0" : "translate-y-full"
       }`}
