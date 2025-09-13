@@ -1,4 +1,4 @@
-interface KeyboardItem {
+export interface KeyboardItem {
   label: string;
   value: string;
   colSpan: number;
