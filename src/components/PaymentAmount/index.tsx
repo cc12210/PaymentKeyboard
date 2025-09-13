@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
+import { formatCurrencyWithUnit } from "../../utils";
 
 const PaymentAmount = ({
   setIsShow,
   amount,
-  setAmount
+  setAmount,
 }: {
   setIsShow: (isShow: boolean) => void;
   amount: string;
   setAmount: (amount: string) => void;
 }) => {
-  const [unit, setUnit] = useState("千");
+  const [unit, setUnit] = useState("");
 
   const handleDocumentClick = (e: MouseEvent) => {
     //  const editableDiv = document.getElementById('editableDiv');
@@ -19,7 +20,7 @@ const PaymentAmount = ({
     const paymentAmountContainer = document.getElementById(
       "payment-amount-caontainer"
     );
-    const amountInput = document.getElementById("amount-Input-payment");
+    
 
     const target = e.target as HTMLElement;
     const isClickKeyboard = keyboardContainer?.contains(target);
@@ -34,6 +35,16 @@ const PaymentAmount = ({
     setIsShow(false);
   };
 
+  const clearAmount = () => {
+    setAmount('');
+    const amountInput = document.getElementById("amount-Input-payment");
+    amountInput?.focus();
+  }
+
+  useEffect(() => {
+    setUnit(formatCurrencyWithUnit(amount));
+  }, [amount]);
+
   useEffect(() => {
     document.addEventListener("click", handleDocumentClick);
     return () => {
@@ -46,7 +57,9 @@ const PaymentAmount = ({
       {/* <button onClick={() => setIsShow(pre => !pre)}>PaymentAmount</button> */}
       <div id="payment-amount-caontainer" className="bg-white p-4">
         <div className="text-[16px] ">提现金额</div>
-        <div className="mt-[5px] text-[16px] text-[#ccc]  pl-[35px]">{unit ? `| ${unit}` : ''}</div>
+        <div className="mt-[5px] text-[16px] text-[#ccc]  pl-[35px] min-h-[24px]">
+          {unit ? `| ${unit}` : ""}
+        </div>
         <div className="flex mb-[5px]">
           <div className="text-[36px]">￥</div>
           {/* 中间金额显示 */}
@@ -63,8 +76,14 @@ const PaymentAmount = ({
           </div>
           {/* 右侧提现按钮和清空金额 */}
           <div className="flex flex-col justify-end items-end">
-            <div className="text-[16px] text-[#1579FE]">全部提现</div>
-            <div className="text-[14px] text-[#ccc]">￥30000</div>
+            {!amount ? (
+              <>
+                <div className="text-[16px] text-[#1579FE]">全部提现</div>
+                <div className="text-[14px] text-[#ccc]">￥30000</div>
+              </>
+            ) : (
+              <div className="text-[16px] text-[#1579FE] relative top-[-20px]" onClick={clearAmount}>清空</div>
+            )}
           </div>
         </div>
         <div className="text-[15px] text-[#999] ">

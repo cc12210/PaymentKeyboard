@@ -43,7 +43,7 @@ const PaymentKeyboard = ({
     // TODO: 提现
   };
   const checkInputAmount = (value: string) => {
-    const validReg = /^\d*(\.\d{0,2})?$/;
+    const validReg = /^(0|[1-9]\d{0,7})(\.\d{0,2})?$/;
 
     return validReg.test(value) ? value : "";
   };
