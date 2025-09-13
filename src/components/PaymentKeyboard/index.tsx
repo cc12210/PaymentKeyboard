@@ -6,6 +6,7 @@ interface IPaymentKeyboardProps {
   amount: string;
   setAmount: (amount: string) => void;
   setIsShow: (isShow: boolean) => void;
+  withDrawAmount: () => void;
 }
 
 const PaymentKeyboard = ({
@@ -13,6 +14,7 @@ const PaymentKeyboard = ({
   setIsShow,
   amount,
   setAmount,
+  withDrawAmount,
 }: IPaymentKeyboardProps) => {
   // 定位光标
   const setInputRange = (inputField: HTMLInputElement, cursorPos: number) => {
@@ -38,10 +40,6 @@ const PaymentKeyboard = ({
     setInputRange(inputField, newCaretPos);
   };
 
-  // 提现
-  const processTransfer = (value: string) => {
-    // TODO: 提现
-  };
   const checkInputAmount = (value: string) => {
     const validReg = /^(0|[1-9]\d{0,7})(\.\d{0,2})?$/;
 
@@ -72,7 +70,7 @@ const PaymentKeyboard = ({
     if (value === "delete") {
       processDelete(value);
     } else if (value === "transfer") {
-      processTransfer(value);
+      withDrawAmount();
     } else {
       processAmountInput(value);
     }
