@@ -1298,6 +1298,11 @@ imurmurhash@^0.1.4:
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==
 
+indexdbwrapper@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/indexdbwrapper/-/indexdbwrapper-1.0.4.tgz#a2dce8f7e67d89331e87726636fa67fb472f0b3e"
+  integrity sha512-/Dy1roYWB5lP5ggf3JBA5YTZzt+uO6pk9m9rDDmbUPF9WVTVjedZqrJMkmPSpJx+29DEQ4bfiyf49rcdVwjPxg==
+
 is-binary-path@~2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-binary-path/-/is-binary-path-2.1.0.tgz#ea1f7f3b80f064236e83470f86c09c254fb45b09"
