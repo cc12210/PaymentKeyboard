@@ -15,8 +15,8 @@ import WithdrawList from "./components/WithdrawList";
 import Arrange from "../../utils/arrange";
 
 // 调用测试
-const arrange = new Arrange("Cicero").wait(2).do('commit').execute();
-const arrange2 = new Arrange("Cicero2").waitFirst(5).do('push').execute();
+const arrange = new Arrange("Cicero").wait(2).do("commit").execute();
+const arrange2 = new Arrange("Cicero2").waitFirst(5).do("push").execute();
 
 const TransferAccount = () => {
   const [amount, setAmount] = useState("");
@@ -104,9 +104,7 @@ const TransferAccount = () => {
 
       {/* 自定义键盘 */}
       <PaymentKeyboard
-        disabled={Boolean(
-          userInfo?.amount && Number(amount) > userInfo?.amount
-        )}
+        disabled={userInfo?.amount ? Boolean(Number(amount) > userInfo?.amount) : true}
         isShow={showPayKeybord}
         amount={amount}
         setAmount={setAmount}
