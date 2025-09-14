@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
 import {
   addWithdraw,
+  clearStorage,
   getUserDetails,
   IUserInfo,
   updateUser,
@@ -20,6 +21,7 @@ const TransferAccount = () => {
   const [userInfo, setUserInfo] = useState<IUserInfo | null>(null);
 
   const initGetUserInfo = () => {
+    setAmount("");
     const userInfo = getUserDetails();
     setUserInfo(userInfo);
   };
@@ -58,6 +60,11 @@ const TransferAccount = () => {
     addWithdraw(withdrawRecord);
   };
 
+  const clearData = () => {
+    clearStorage();
+    initGetUserInfo();
+  }
+
   useEffect(() => {
     initGetUserInfo();
   }, []);
@@ -76,6 +83,11 @@ const TransferAccount = () => {
       <div>
         <button className="text-[#1579fe] px-4 py-2 rounded-md" onClick={() => setIsShowWithdrawList(true)}>
           显示转账记录
+        </button>
+      </div>
+      <div>
+        <button className="text-[#1579fe] px-4 py-2 rounded-md" onClick={clearData}>
+          清空数据,重新进行初始化操作
         </button>
       </div>
 
