@@ -22,6 +22,9 @@ const WithdrawList = ({ isShow, setIsShow }: IWithdrawProps) => {
       <div className="w-full h-[600px] bg-white border-box p-4 flex flex-col">
         <div className="text-[16px] font-bold py-2">提现记录</div>
         <div className="flex-1 border-box py-2 overflow-y-auto">
+          {
+            !withdrawListData.length && <div>暂无提现记录</div>
+          }
           {withdrawListData.map((item, index) => (
             <div
               key={index}

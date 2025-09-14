@@ -74,7 +74,7 @@ const TransferAccount = () => {
 
       {/* 显示转账记录 */}
       <div>
-        <button className="text-[#1579fe]" onClick={() => setIsShowWithdrawList(true)}>
+        <button className="text-[#1579fe] px-4 py-2 rounded-md" onClick={() => setIsShowWithdrawList(true)}>
           显示转账记录
         </button>
       </div>
