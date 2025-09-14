@@ -38,3 +38,51 @@ export function formatCurrencyWithUnit(inputNumber: string, decimalPlaces = 2) {
 
   return result;
 }
+
+interface IArrayToTree {
+  id: number;
+  name: string;
+  parentId?: number;
+}
+
+export function arrayToTree(arr: IArrayToTree[]) {
+  if (!arr.length) {
+    return [];
+  }
+  const nodeMap = new Map();
+  const roots = [];
+
+  // 初始化节点
+  for (const item of arr) {
+    const newNode = {
+      ...item,
+      children: []
+    };
+    nodeMap.set(item.id, newNode);
+  }
+  for (const item of arr) {
+    const currentNode = nodeMap.get(item.id);
+    if (item.parentId !== null) {
+      const parentNode = nodeMap.get(item.parentId);
+      if (parentNode) {
+        parentNode.children.push(currentNode);
+      } else {
+        roots.push(currentNode);
+      }
+    } else {
+      roots.push(currentNode);
+    }
+  }
+  return roots;
+}
+
+const arrTest: IArrayToTree[] = [
+  { id: 1, name: "i1" },
+  { id: 2, name: "i2", parentId: 1 },
+  { id: 3, name: "i3", parentId: 2 },
+  { id: 4, name: "i4", parentId: 3 },
+  { id: 8, name: "i8", parentId: 7 },
+  { id: 7, name: "i7" }
+];
+const tree = arrayToTree(arrTest);
+console.log("tree处理结果", tree);
