@@ -12,6 +12,11 @@ import {
 } from "../../storageManage";
 import dayjs from "dayjs";
 import WithdrawList from "./components/WithdrawList";
+import Arrange from "../../utils/arrange";
+
+// 调用测试
+const arrange = new Arrange("Cicero").wait(2).do('commit').execute();
+const arrange2 = new Arrange("Cicero2").waitFirst(5).do('push').execute();
 
 const TransferAccount = () => {
   const [amount, setAmount] = useState("");
@@ -63,7 +68,7 @@ const TransferAccount = () => {
   const clearData = () => {
     clearStorage();
     initGetUserInfo();
-  }
+  };
 
   useEffect(() => {
     initGetUserInfo();
@@ -81,12 +86,18 @@ const TransferAccount = () => {
 
       {/* 显示转账记录 */}
       <div>
-        <button className="text-[#1579fe] px-4 py-2 rounded-md" onClick={() => setIsShowWithdrawList(true)}>
+        <button
+          className="text-[#1579fe] px-4 py-2 rounded-md"
+          onClick={() => setIsShowWithdrawList(true)}
+        >
           显示转账记录
         </button>
       </div>
       <div>
-        <button className="text-[#1579fe] px-4 py-2 rounded-md" onClick={clearData}>
+        <button
+          className="text-[#1579fe] px-4 py-2 rounded-md"
+          onClick={clearData}
+        >
           清空数据,重新进行初始化操作
         </button>
       </div>

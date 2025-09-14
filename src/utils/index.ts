@@ -84,5 +84,7 @@ const arrTest: IArrayToTree[] = [
   { id: 8, name: "i8", parentId: 7 },
   { id: 7, name: "i7" }
 ];
+// 这个地方需要注意下，parentId为null的是根节点，根节点的parentId为undefined
+// 语雀上的测试数据少了一个根节点，导致处理结果有问题，最后返回的时候也可以过滤一遍，或者不处理直接返回
 const tree = arrayToTree(arrTest);
 console.log("tree处理结果", tree);
