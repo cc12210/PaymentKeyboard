@@ -10,7 +10,7 @@ const Modal = ({
   children: ReactNode;
 }) => {
   return (
-    <div className="box-border p-[20px]">
+    <div id="modal-container" className="box-border p-[20px]">
       {/* 遮罩层 */}
       <div
         onClick={() => setIsShow(false)}

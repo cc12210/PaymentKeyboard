@@ -5,7 +5,6 @@ export interface WithDrawInfo {
   time: string;
   status: number;
   userName: string;
-  userId: Number;
 }
 
 export interface IUserInfo {
@@ -68,16 +67,13 @@ export const getWithdrawList = () => {
   return [];
 }
 
-export const updateUser = (userItem: WithDrawInfo) => {
-  const userStore = localStorage.getItem(DB_STORE_MANAGE.USER_STORE);
-  if (userStore) {
-    try {
-      const userList = JSON.parse(userStore);
-      userList.push(userItem);
-      localStorage.setItem(DB_STORE_MANAGE.USER_STORE, JSON.stringify(userList));
-    } catch (error) {
-    }
-  } else {
-    localStorage.setItem(DB_STORE_MANAGE.USER_STORE, JSON.stringify([userItem]));
-  }
+// 更新用户信息
+export const updateUser = (userItem: IUserInfo) => {
+  localStorage.setItem(DB_STORE_MANAGE.USER_STORE, JSON.stringify(userItem));
+}
+
+// 清空相关storage
+export const clearStorage = () => {
+  initStorageUser();
+  localStorage.removeItem(DB_STORE_MANAGE.WITHDRAW_STORE);
 }

@@ -2,12 +2,21 @@ import PaymentKeyboard from "../../components/PaymentKeyboard";
 import PaymentAmount from "../../components/PaymentAmount";
 import { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
-import { getUserDetails, IUserInfo } from "../../storageManage";
+import {
+  addWithdraw,
+  getUserDetails,
+  IUserInfo,
+  updateUser,
+  WithDrawInfo,
+} from "../../storageManage";
+import dayjs from "dayjs";
+import WithdrawList from "./components/WithdrawList";
+
 const TransferAccount = () => {
   const [amount, setAmount] = useState("");
   const [showPayKeybord, setShowPayKeyboard] = useState(true);
   const [showModal, setShowModal] = useState(false);
-
+  const [isShowWithdrawList, setIsShowWithdrawList] = useState(false);
   const [userInfo, setUserInfo] = useState<IUserInfo | null>(null);
 
   const initGetUserInfo = () => {
@@ -18,6 +27,35 @@ const TransferAccount = () => {
   // 提现
   const withDrawAmount = () => {
     setShowModal(true);
+  };
+
+  const cancelWithDraw = () => {
+    setShowModal(false);
+  };
+
+  const confirmWithDraw = () => {
+    let whithDraw: IUserInfo = getUserDetails();
+    let calcAmount = Number(amount);
+    whithDraw.amount -= calcAmount;
+
+    if (whithDraw.limitFree > calcAmount) {
+      whithDraw.limitFree -= calcAmount;
+    } else {
+      whithDraw.limitFree = 0;
+    }
+    updateUser(whithDraw);
+    initGetUserInfo();
+    setShowModal(false);
+    setAmount("");
+
+    // 记录提现信息
+    const withdrawRecord: WithDrawInfo = {
+      amount: calcAmount,
+      time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      status: 1, // 提现状态
+      userName: userInfo?.userName || "",
+    };
+    addWithdraw(withdrawRecord);
   };
 
   useEffect(() => {
@@ -33,9 +71,19 @@ const TransferAccount = () => {
         setAmount={setAmount}
         userInfo={userInfo}
       />
+
+      {/* 显示转账记录 */}
+      <div>
+        <button className="text-[#1579fe]" onClick={() => setIsShowWithdrawList(true)}>
+          显示转账记录
+        </button>
+      </div>
+
       {/* 自定义键盘 */}
       <PaymentKeyboard
-        disabled={Boolean(userInfo?.amount && Number(amount) > userInfo?.amount)}
+        disabled={Boolean(
+          userInfo?.amount && Number(amount) > userInfo?.amount
+        )}
         isShow={showPayKeybord}
         amount={amount}
         setAmount={setAmount}
@@ -50,15 +98,13 @@ const TransferAccount = () => {
           <p className="mb-4">您确定要提现 {Number(amount)} 元吗？</p>
           <div className="flex justify-end">
             <button
-              onClick={() => setShowModal(false)}
+              onClick={cancelWithDraw}
               className="mr-2 px-4 py-2 bg-gray-300 rounded-md"
             >
               取消
             </button>
             <button
-              onClick={() => {
-                setShowModal(false);
-              }}
+              onClick={confirmWithDraw}
               className="px-4 py-2 bg-[#1579FE] text-white rounded-md"
             >
               确认
@@ -66,6 +112,12 @@ const TransferAccount = () => {
           </div>
         </div>
       </Modal>
+
+      {/* 提现详情 */}
+      <WithdrawList
+        isShow={isShowWithdrawList}
+        setIsShow={setIsShowWithdrawList}
+      />
     </div>
   );
 };

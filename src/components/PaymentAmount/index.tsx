@@ -18,15 +18,19 @@ const AmountTips = ({ userInfo, amount }: IAmountProps) => {
       </div>
     );
   }
-  if (Number(amount) > userInfo?.limitFree && Number(amount) <= userInfo?.amount) {
+  if (Number(amount)) {
     return (
       <div className="text-[15px]">
         预计收取服务费
         <span className="text-[#FF4D4F] ml-[5px]">
           ¥
-          {Number(
-            (Number(amount) - userInfo?.limitFree) * userInfo?.withdrawTax
-          ).toFixed(2)}
+          {
+            Number(amount) > userInfo?.limitFree ? 
+            Number(
+              (Number(amount) - userInfo?.limitFree) * userInfo?.withdrawTax
+            ).toFixed(2) : 
+            "0"
+          }
         </span>
       </div>
     );
@@ -60,13 +64,17 @@ const PaymentAmount = ({
     const paymentAmountContainer = document.getElementById(
       "payment-amount-caontainer"
     );
+    const modalContainer = document.getElementById(
+      "modal-container"
+    );
 
     const target = e.target as HTMLElement;
     const isClickKeyboard = keyboardContainer?.contains(target);
+    const isClickModalContainer = modalContainer?.contains(target);
     const isClickPaymentAmountContainer =
       paymentAmountContainer?.contains(target);
     // 卡片区域和键盘区域继续保持显示
-    if (isClickKeyboard || isClickPaymentAmountContainer) {
+    if (isClickKeyboard || isClickPaymentAmountContainer || isClickModalContainer) {
       e.stopPropagation();
       // amountInput?.focus();
       return;
