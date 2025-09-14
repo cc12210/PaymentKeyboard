@@ -1,5 +1,5 @@
 import TransferAccount from "./pages/TransferAccount";
-import './indexDB';
+import './storageManage';
 
 function App() {
   return <TransferAccount />;

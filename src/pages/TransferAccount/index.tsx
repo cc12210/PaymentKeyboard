@@ -1,17 +1,28 @@
 import PaymentKeyboard from "../../components/PaymentKeyboard";
 import PaymentAmount from "../../components/PaymentAmount";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
-
+import { getUserDetails, IUserInfo } from "../../storageManage";
 const TransferAccount = () => {
   const [amount, setAmount] = useState("");
   const [showPayKeybord, setShowPayKeyboard] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
+  const [userInfo, setUserInfo] = useState<IUserInfo | null>(null);
+
+  const initGetUserInfo = () => {
+    const userInfo = getUserDetails();
+    setUserInfo(userInfo);
+  };
+
   // 提现
   const withDrawAmount = () => {
     setShowModal(true);
   };
+
+  useEffect(() => {
+    initGetUserInfo();
+  }, []);
 
   return (
     <div>
@@ -20,9 +31,11 @@ const TransferAccount = () => {
         setIsShow={setShowPayKeyboard}
         amount={amount}
         setAmount={setAmount}
+        userInfo={userInfo}
       />
       {/* 自定义键盘 */}
       <PaymentKeyboard
+        disabled={Boolean(userInfo?.amount && Number(amount) > userInfo?.amount)}
         isShow={showPayKeybord}
         amount={amount}
         setAmount={setAmount}
@@ -34,7 +47,7 @@ const TransferAccount = () => {
       <Modal isShow={showModal} setIsShow={setShowModal}>
         <div className="bg-white p-8 rounded-lg">
           <h2 className="text-2xl font-bold mb-4">提现确认</h2>
-          <p className="mb-4">您确定要提现 {amount} 元吗？</p>
+          <p className="mb-4">您确定要提现 {Number(amount)} 元吗？</p>
           <div className="flex justify-end">
             <button
               onClick={() => setShowModal(false)}

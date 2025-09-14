@@ -7,6 +7,7 @@ interface IPaymentKeyboardProps {
   setAmount: (amount: string) => void;
   setIsShow: (isShow: boolean) => void;
   withDrawAmount: () => void;
+  disabled?: boolean;
 }
 
 const PaymentKeyboard = ({
@@ -15,6 +16,7 @@ const PaymentKeyboard = ({
   amount,
   setAmount,
   withDrawAmount,
+  disabled = false,
 }: IPaymentKeyboardProps) => {
   // 定位光标
   const setInputRange = (inputField: HTMLInputElement, cursorPos: number) => {
@@ -24,7 +26,7 @@ const PaymentKeyboard = ({
     }, 10);
   };
   // 处理键盘输入
-  const processDelete = (value: string) => {
+  const processDelete = () => {
     const inputField = document.getElementById(
       "amount-Input-payment"
     ) as HTMLInputElement;
@@ -63,12 +65,13 @@ const PaymentKeyboard = ({
     // const
   };
   const handleKeyClick = (value: string) => {
-    if (value === "transfer" && !Number(amount)) {
+    // 未输入金额和disable判读成立则禁止提交
+    if (value === "transfer" && (!Number(amount) || disabled)) {
       return;
     }
     // 处理键盘输入
     if (value === "delete") {
-      processDelete(value);
+      processDelete();
     } else if (value === "transfer") {
       withDrawAmount();
     } else {
@@ -91,7 +94,7 @@ const PaymentKeyboard = ({
           const baseStyles =
             "flex items-center justify-center grid-cols-1 font-medium p-[20px] text-[20px] font-bold";
           const borderColor = "border border-color-[#eee]";
-          let canTransfer = Number(amount) > 0;
+          let canTransfer = Number(amount) > 0 && !disabled;
           const bgColor = isTransfer
             ? canTransfer
               ? "bg-[#1579FE]"

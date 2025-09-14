@@ -1,14 +1,54 @@
 import { useEffect, useState } from "react";
 import { formatCurrencyWithUnit } from "../../utils";
+import { getUserDetails, IUserInfo } from "../../storageManage";
+
+interface IAmountProps {
+  userInfo: IUserInfo | null;
+  amount: string;
+}
+
+const AmountTips = ({ userInfo, amount }: IAmountProps) => {
+  if (!userInfo) {
+    return null;
+  }
+  if (Number(amount) > userInfo?.amount) {
+    return (
+      <div className="text-[15px] text-[red]">
+        超过可用余额(¥{userInfo?.amount})
+      </div>
+    );
+  }
+  if (Number(amount) > userInfo?.limitFree && Number(amount) <= userInfo?.amount) {
+    return (
+      <div className="text-[15px]">
+        预计收取服务费
+        <span className="text-[#FF4D4F] ml-[5px]">
+          ¥
+          {Number(
+            (Number(amount) - userInfo?.limitFree) * userInfo?.withdrawTax
+          ).toFixed(2)}
+        </span>
+      </div>
+    );
+  } else {
+    return (
+      <div className="text-[15px]">
+        免费额度还剩{userInfo?.limitFree}元，超出部分收取0.1%的手续费
+      </div>
+    );
+  }
+};
 
 const PaymentAmount = ({
   setIsShow,
   amount,
   setAmount,
+  userInfo,
 }: {
   setIsShow: (isShow: boolean) => void;
   amount: string;
   setAmount: (amount: string) => void;
+  userInfo: IUserInfo | null;
 }) => {
   const [unit, setUnit] = useState("");
 
@@ -20,7 +60,6 @@ const PaymentAmount = ({
     const paymentAmountContainer = document.getElementById(
       "payment-amount-caontainer"
     );
-    
 
     const target = e.target as HTMLElement;
     const isClickKeyboard = keyboardContainer?.contains(target);
@@ -35,11 +74,17 @@ const PaymentAmount = ({
     setIsShow(false);
   };
 
+  const withDrawAll = () => {
+    if (userInfo?.amount) {
+      setAmount(String(userInfo?.amount));
+    }
+  };
+
   const clearAmount = () => {
-    setAmount('');
+    setAmount("");
     const amountInput = document.getElementById("amount-Input-payment");
     amountInput?.focus();
-  }
+  };
 
   useEffect(() => {
     setUnit(formatCurrencyWithUnit(amount));
@@ -78,16 +123,28 @@ const PaymentAmount = ({
           <div className="flex flex-col justify-end items-end">
             {!amount ? (
               <>
-                <div className="text-[16px] text-[#1579FE]">全部提现</div>
-                <div className="text-[14px] text-[#ccc]">￥30000</div>
+                <div
+                  onClick={withDrawAll}
+                  className="text-[16px] text-[#1579FE]"
+                >
+                  全部提现
+                </div>
+                <div className="text-[14px] text-[#ccc]">
+                  ￥{userInfo?.amount}
+                </div>
               </>
             ) : (
-              <div className="text-[16px] text-[#1579FE] relative top-[-20px]" onClick={clearAmount}>清空</div>
+              <div
+                className="text-[16px] text-[#1579FE] relative top-[-20px]"
+                onClick={clearAmount}
+              >
+                清空
+              </div>
             )}
           </div>
         </div>
-        <div className="text-[15px] text-[#999] ">
-          免费额度还剩0元，超出部分收取0.1%的手续费
+        <div className="text-[15px]">
+          <AmountTips userInfo={userInfo} amount={amount} />
         </div>
       </div>
     </div>
