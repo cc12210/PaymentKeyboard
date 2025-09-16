@@ -54,3 +54,26 @@ const flatArr = (arr: any) => {
   return flatArr
 }
 
+
+const copyDebounce = (fn, delay) => {
+  let timer;
+  return function () {
+    if (timer) clearTimeout(timer)
+
+    timer = setTimeout(() => {
+      fn();
+    }, delay);
+  }
+}
+
+const copyThrottle = (fn, seconds) => {
+  let startTime = 0;
+  return function () {
+    let nowTime = new Date().getTime();
+    let waitTime = seconds - nowTime - startTime;
+    if (waitTime <= 0) {
+      fn()
+      startTime = nowTime
+    }
+  }
+}
