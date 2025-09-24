@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TransferAccount from "./pages/TransferAccount";
-import './utils/test';
+import "./utils/test";
 import "./storageManage";
 
 const str = "hello world";
@@ -20,8 +20,8 @@ function App() {
   //   }, 1000);
   //   return () => clearTimeout(timer);
   // }, [spliceLen]);
-  // return <TransferAccount />;
-  return <>{showWord}</>;
+  return <TransferAccount />;
+  // return <>{showWord}</>;
 }
 
 export default App;
